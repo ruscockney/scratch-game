@@ -8,6 +8,7 @@ import ru.assignment.model.Matrix;
 import ru.assignment.model.config.Config;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,6 +96,40 @@ class LinearSymbolsWinDetectorTest {
         expectedMap.get("A").put("horizontally_linear_symbols", "same_symbols_horizontally");
         expectedMap.put("C", new HashMap<>());
         expectedMap.get("C").put("horizontally_linear_symbols", "same_symbols_horizontally");
+
+        assertEquals(expectedMap, actualMap);
+    }
+
+    @Test
+    void detect_all_comb_in_1_group() {
+        Matrix matrix = Utils.generateMatrix(new String[][]{{"A", "A", "A"}, {"A", "A", "A"}, {"A", "MISS", "A"}}, "MISS");
+
+        config.getWinCombinations().get("same_symbols_horizontally").setGroup("group");
+        config.getWinCombinations().get("same_symbols_vertically").setGroup("group");
+        config.getWinCombinations().get("same_symbols_diagonally_left_to_right").setGroup("group");
+        config.getWinCombinations().get("same_symbols_diagonally_right_to_left").setGroup("group");
+        config.getWinCombinations().get("same_symbols_diagonally_right_to_left").setRewardMultiplier(7.0);
+
+        Map<String, Map<String, String>> actualMap = linearSymbolsWinDetector.detect(matrix);
+
+        Map<String, Map<String, String>> expectedMap = new HashMap<>();
+        expectedMap.put("A", new HashMap<>());
+        expectedMap.get("A").put("group", "same_symbols_diagonally_right_to_left");
+
+        assertEquals(expectedMap, actualMap);
+    }
+
+    @Test
+    void detect_strange_covered_area_for_horizontal() {
+        Matrix matrix = Utils.generateMatrix(new String[][]{{"A", "B", "A"}, {"C", "D", "E"}, {"A", "MISS", "A"}}, "MISS");
+
+        config.getWinCombinations().get("same_symbols_horizontally").setCoveredAreas(List.of(List.of("0:0", "0:2", "2:0", "2:2")));
+
+        Map<String, Map<String, String>> actualMap = linearSymbolsWinDetector.detect(matrix);
+
+        Map<String, Map<String, String>> expectedMap = new HashMap<>();
+        expectedMap.put("A", new HashMap<>());
+        expectedMap.get("A").put("horizontally_linear_symbols", "same_symbols_horizontally");
 
         assertEquals(expectedMap, actualMap);
     }

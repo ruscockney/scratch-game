@@ -1,4 +1,6 @@
 ## How to run ##
+Need to JDK 19
+
 `java -jar scratch-game.jar --config config.json --betting-amount 100`
 
 ## How to build ##
@@ -18,8 +20,10 @@ Result in `target/scratch-game.jar`
 
 ## Description ##
 
+- Implemented all the OPTIONALs
 - The program logs result json. So you can see it in CLI;
 - This version of game generates just 1 bonus symbol for every size of matrix. The needing amount of bonus symbols is not clear from issue. And I decided to generate 1 because there are just 1 bonus symbol in output example;
-- When program choose the best combination for same_symbol type in `SameSymbolsWinDetector.class` it compares by `count` from config. For `LinearSymbolsWinDetector.class` I use `reward_multiplier` as comparator;
+- When program choose the best combination for same_symbols type in `SameSymbolsWinDetector.class` it compares by `count` from config. For `LinearSymbolsWinDetector.class` I use `reward_multiplier` as comparator;
+- By logic of this program same_symbols and linear_symbols type of win combinations can't be in 1 group;
 - The program needs config validation, but I don't implement it;
 - It will be good to implement more complicated exception handling and logging.

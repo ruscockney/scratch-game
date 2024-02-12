@@ -160,4 +160,75 @@ class GameFacadeImplTest {
 
         assertEquals(expectedResult, actualResult);
     }
+
+    //same symbols win comb in 3 diff groups
+    @Test
+    public void execute_win_comb_7() {
+        String[][] data = {{"A", "B", "E", "A"}, {"C", "A", "D", "B"}, {"A", "MISS", "E", "D"}, {"A", "F", "C", "A"}};
+        Matrix matrix = Utils.generateMatrix(data, "MISS");
+
+        when(matrixGenerator.generate()).thenReturn(matrix);
+
+        config.getWinCombinations().get("same_symbol_4_times").setGroup("group1");
+        config.getWinCombinations().get("same_symbol_5_times").setGroup("group2");
+
+        Result actualResult = gameFacade.execute(100.0);
+
+        Map<String, List<String>> expectedWinCombinations = new HashMap<>();
+        expectedWinCombinations.put("A", List.of("same_symbol_6_times", "same_symbol_5_times", "same_symbol_4_times"));
+        Result expectedResult = Result.builder()
+                .matrix(data)
+                .appliedBonusSymbol("MISS")
+                .appliedWinningCombinations(expectedWinCombinations)
+                .reward(45000.0)
+                .build();
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    //like test 7 but in 1 group
+    @Test
+    public void execute_win_comb_8() {
+        String[][] data = {{"A", "B", "E", "A"}, {"C", "A", "D", "B"}, {"A", "MISS", "E", "D"}, {"A", "F", "C", "A"}};
+        Matrix matrix = Utils.generateMatrix(data, "MISS");
+
+        when(matrixGenerator.generate()).thenReturn(matrix);
+
+        Result actualResult = gameFacade.execute(100.0);
+
+        Map<String, List<String>> expectedWinCombinations = new HashMap<>();
+        expectedWinCombinations.put("A", List.of("same_symbol_6_times"));
+        Result expectedResult = Result.builder()
+                .matrix(data)
+                .appliedBonusSymbol("MISS")
+                .appliedWinningCombinations(expectedWinCombinations)
+                .reward(15000.0)
+                .build();
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void execute_win_comb_9() {
+        String[][] data = {{"A", "B", "A"}, {"C", "D", "E"}, {"A", "MISS", "A"}};
+        Matrix matrix = Utils.generateMatrix(data, "MISS");
+
+        when(matrixGenerator.generate()).thenReturn(matrix);
+
+        config.getWinCombinations().get("same_symbols_horizontally").setCoveredAreas(List.of(List.of("0:0", "0:2", "2:0", "2:2")));
+
+        Result actualResult = gameFacade.execute(100.0);
+
+        Map<String, List<String>> expectedWinCombinations = new HashMap<>();
+        expectedWinCombinations.put("A", List.of("same_symbol_4_times", "same_symbols_horizontally"));
+        Result expectedResult = Result.builder()
+                .matrix(data)
+                .appliedBonusSymbol("MISS")
+                .appliedWinningCombinations(expectedWinCombinations)
+                .reward(15000.0)
+                .build();
+
+        assertEquals(expectedResult, actualResult);
+    }
+
 }
