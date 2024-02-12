@@ -10,7 +10,7 @@ Result in `target/scratch-game.jar`
 
 ## Implementation ##
 
-- `parser.ConfigParser` parses input json config;
+- `parser.ConfigParser.class` parses input json config;
 - `processor.SymbolSelector.class` generates symbol by probability map;
 - `service.MatrixGenerator.class` generates matrix using `processor.SymbolSelector.class` for each cell;
 - `service.RewardCounter.class` counts reward by matrix and config;
