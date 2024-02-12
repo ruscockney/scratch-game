@@ -45,7 +45,7 @@ public class RewardCounterImpl implements RewardCounter {
                 break;
         }
 
-        log.info("Start of reward counting");
+        log.info("End of reward counting");
 
         return reward;
     }
