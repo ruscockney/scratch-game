@@ -1,5 +1,5 @@
 ## How to run ##
-Need to JDK 19
+Need JRE 17+
 
 `java -jar scratch-game.jar --config config.json --betting-amount 100`
 
